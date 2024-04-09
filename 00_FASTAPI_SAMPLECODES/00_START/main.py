@@ -10,6 +10,11 @@ def read_root():
     return {"message": "Hello, World!"}
 
 
+@app.get("/hello")
+def read_hello():
+    return {"message": "hi, World!"}
+
+
 @app.get("/inherit")
 def template_inherit(request: Request):
     my_text = "FastAPI와 Jinja2를 이용한 예시입니다."
