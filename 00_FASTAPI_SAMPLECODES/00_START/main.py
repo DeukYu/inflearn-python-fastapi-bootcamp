@@ -16,8 +16,13 @@ def read_hello():
 
 
 @app.get("/items/{item_id}")
-def read_item(item_id):
+def read_item(item_id: int):
     return {"item:id": item_id}
+
+
+@app.get("/getdata/")
+def read_items(data: str = "encoding"):
+    return {"data": data}
 
 
 @app.get("/inherit")
