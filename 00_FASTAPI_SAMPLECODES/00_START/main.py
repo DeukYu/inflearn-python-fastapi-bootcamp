@@ -15,6 +15,11 @@ def read_hello():
     return {"message": "hi, World!"}
 
 
+@app.get("/items/{item_id}")
+def read_item(item_id):
+    return {"item:id": item_id}
+
+
 @app.get("/inherit")
 def template_inherit(request: Request):
     my_text = "FastAPI와 Jinja2를 이용한 예시입니다."
