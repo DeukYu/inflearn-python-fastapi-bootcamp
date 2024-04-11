@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Request
+from typing import List
+from fastapi import FastAPI, Query, Request
 from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
@@ -20,8 +21,13 @@ def read_item(item_id: int):
     return {"item:id": item_id}
 
 
+@app.get("/items/")
+async def read_items(items: List[int] = Query([])):
+    return {"items": items}
+
+
 @app.get("/getdata/")
-def read_items(data: str = "encoding"):
+def read_data(data: str = "funcoding"):
     return {"data": data}
 
 
