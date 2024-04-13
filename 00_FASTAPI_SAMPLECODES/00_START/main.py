@@ -7,6 +7,11 @@ app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
 
+class Image(BaseModel):
+    url: str
+    name: str
+
+
 class Item(BaseModel):
     name: str = Field(..., title="Item Name", min_length=2, max_length=50)
     description: str = Field(
@@ -14,6 +19,7 @@ class Item(BaseModel):
     )
     price: float
     tax: float = 0.1
+    image: Image
 
 
 @app.get("/")
