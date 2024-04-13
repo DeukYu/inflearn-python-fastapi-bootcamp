@@ -1,15 +1,17 @@
 from typing import List, Optional
 from fastapi import FastAPI, Query, Request
 from fastapi.templating import Jinja2Templates
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
 
 class Item(BaseModel):
-    name: str
-    description: Optional[str] = None
+    name: str = Field(..., title="Item Name", min_length=2, max_length=50)
+    description: str = Field(
+        None, description="The description of the item", max_length=300
+    )
     price: float
     tax: float = 0.1
 
