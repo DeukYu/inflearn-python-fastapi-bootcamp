@@ -1,9 +1,17 @@
-from typing import List
+from typing import List, Optional
 from fastapi import FastAPI, Query, Request
 from fastapi.templating import Jinja2Templates
+from pydantic import BaseModel
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
+
+
+class Item(BaseModel):
+    name: str
+    description: Optional[str] = None
+    price: float
+    tax: float = 0.1
 
 
 @app.get("/")
@@ -40,8 +48,8 @@ def template_inherit(request: Request):
 
 
 @app.post("/items/")
-def create_item(item: dict):
-    return {"item": item}
+def create_item(item: Item):
+    return {"item": item.model_dump()}
 
 
 @app.put("/items/{item_id}")
