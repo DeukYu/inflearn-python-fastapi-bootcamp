@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List
 from fastapi import FastAPI, Query, Request
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel, Field
