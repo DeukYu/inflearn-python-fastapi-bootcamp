@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import FastAPI, Query, Request
+from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel, Field
 
@@ -23,8 +23,10 @@ class Item(BaseModel):
 
 
 @app.get("/")
-def read_root():
-    return {"message": "Hello, World!"}
+def read_root(req: Request):
+    return templates.TemplateResponse(
+        "index.html", {"request": req, "username": "Deuk Yu"}
+    )
 
 
 @app.get("/hello")
@@ -34,7 +36,11 @@ def read_hello():
 
 @app.get("/items/{item_id}")
 def read_item(item_id: int):
-    return {"item:id": item_id}
+    try:
+        if item_id < 0:
+            raise ValueError("음수는 허용되지 않습니다.")
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 @app.get("/items/")
