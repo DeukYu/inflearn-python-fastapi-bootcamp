@@ -1,10 +1,43 @@
 from typing import List
-from fastapi import FastAPI, HTTPException, Query, Request
+from fastapi import Depends, FastAPI, HTTPException, Query, Request
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel, Field
+from sqlalchemy import Column, Integer, String, create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker, Session
+
+DATABASE_URL = "mysql-pymysql://id:password@localhost/db_name"
+
+engine = create_engine(DATABASE_URL)
+
+Base = declarative_base()
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
+
+
+class tbl_account(Base):
+    __tablename__ = "tbl_account"
+
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String(50), unique=True, index=True)
+    email = Column(String(120))
+
+
+class UserCreate(BaseModel):
+    username: str
+    email: str
+
+
+# Base.metadata.create_all(bind=engine)
+
+
+def get_db():
+    db = Session(bind=engine)
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 class Image(BaseModel):
@@ -27,6 +60,11 @@ def read_root(req: Request):
     return templates.TemplateResponse(
         "index.html", {"request": req, "username": "Deuk Yu"}
     )
+
+
+# @app.post("/users/")
+# def create_user(user : UserCreate, db: Session = Depends(get_db)):
+#     new_user = User()
 
 
 @app.get("/hello")
