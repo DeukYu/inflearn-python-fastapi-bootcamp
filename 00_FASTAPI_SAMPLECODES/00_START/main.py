@@ -15,6 +15,8 @@ Base = declarative_base()
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
+SESSION = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
 
 class tbl_account(Base):
     __tablename__ = "tbl_account"
