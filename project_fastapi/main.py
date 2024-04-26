@@ -94,7 +94,7 @@ async def update_memo(memo_id: int, db: Session = Depends(get_db)):
 async def read_root(request: Request):
     return templates.TemplateResponse("home.html", {"request": request})
 
-
+# 설명 
 @app.get("/about")
 async def about():
     return {"message": "이것은 마이 메모 앱의 소개 페이지입니다."}
