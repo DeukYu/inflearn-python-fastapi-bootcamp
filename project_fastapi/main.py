@@ -4,6 +4,9 @@ from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from sqlalchemy import Column, Integer, String, create_engine
 from sqlalchemy.orm import Session, declarative_base
+from passlib.context import CryptContext
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -94,7 +97,8 @@ async def update_memo(memo_id: int, db: Session = Depends(get_db)):
 async def read_root(request: Request):
     return templates.TemplateResponse("home.html", {"request": request})
 
-# 설명 
+
+# 설명
 @app.get("/about")
 async def about():
     return {"message": "이것은 마이 메모 앱의 소개 페이지입니다."}
